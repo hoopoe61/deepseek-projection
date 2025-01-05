@@ -9,7 +9,7 @@ from projection.deepseek_proj import DeepSeekProjection
 def project_v3():
     TOKENS_V3 = 14.8 * 10**12
     GBS_V3 = 15360
-    GPU_HOURS_V3 = 180 * 10**3 * 8.1  # K GPU Hours/T Tokens
+    GPU_HOURS_V3 = 180 * 10**3 * 14.8  # K GPU Hours/T Tokens
 
     model_config = DeepSeekV3
     print("-" * 50)
