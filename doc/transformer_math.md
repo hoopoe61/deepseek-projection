@@ -50,15 +50,15 @@ Notations (same as ones in Megatron-LM paper):
 
 The params and forward FLOPs in a transformer block:
 
-| Item                | Formula                                               | Shape                                                        | Params        | Fwd FLOPs          | Comments                                                     |
-| ------------------- | ----------------------------------------------------- | ------------------------------------------------------------ | ------------- | ------------------ | ------------------------------------------------------------ |
-| Q,K,V projection    | $Q=xW_Q \newline K=xW_K \newline V=xW_V$              | $[b, s, h] \times [h, h] = [b, s, h]$                        | $3h^2 + 3h$   | $3 * 2bsh^2$       | w/ bias                                                      |
-| SDPA                | $z=\operatorname {Softmax} (\frac{QK^T}{\sqrt{h}}) V$ | $QK^T: [b, a, s, h_a] \times [b, a, h_a, s] = [b, a, s, s] \newline \text{AttenScore} V: [b, a, s, s] \times [b, a, s, h_a] = [b, a, s, h_a]$ | 0             | $2 * 2bs^2h$       | $\text{AttenScore} = \operatorname {Softmax}(\frac{QK^T}{\sqrt{h}})$ |
-| Out projection      | $x_{o}=z W_O$                                         | $[b, s, h] \times [h, h] = [b, s, h]$                        | $h^2 + h$     | $2bsh^2$           | w/ bias                                                      |
-| FFN up projection   | $y_1 = x_{o}W_1 + b_1$                                | $[b, s, h] \times [h, 4h] = [b, s, 4h]$                      | $4h^2 + 4h$   | $8bsh^2$           | $h \to 4h$, w/ bias                                          |
-| FFN down projection | $y_2 = y_1 W_2 + b_2$                                 | $[b, s, 4h] \times [4h, h] = [b, s, h]$                      | $4h^2 + h$    | $8bsh^2$           | $4h \to h$, w/ bias                                          |
-| two LayerNorm       | \                                                     | \                                                            | $4h$          | 0                  |                                                              |
-| Total               |                                                       |                                                              | $12h^2 + 13h$ | $24bsh^2 + 4bs^2h$ |                                                              |
+| Item                | Formula                                       | Shape                                                        | Params        | Fwd FLOPs          | Comments                                                     |
+| ------------------- |-----------------------------------------------| ------------------------------------------------------------ | ------------- | ------------------ | ------------------------------------------------------------ |
+| Q,K,V projection    | $Q=xW_Q \newline K=xW_K \newline V=xW_V$      | $[b, s, h] \times [h, h] = [b, s, h]$                        | $3h^2 + 3h$   | $3 * 2bsh^2$       | w/ bias                                                      |
+| SDPA                | $z=\text {Softmax} (\frac{QK^T}{\sqrt{h}}) V$ | $QK^T: [b, a, s, h_a] \times [b, a, h_a, s] = [b, a, s, s] \newline \text{AttenScore} V: [b, a, s, s] \times [b, a, s, h_a] = [b, a, s, h_a]$ | 0             | $2 * 2bs^2h$       | $\text{AttenScore} = \operatorname {Softmax}(\frac{QK^T}{\sqrt{h}})$ |
+| Out projection      | $x_{o}=z W_O$                                 | $[b, s, h] \times [h, h] = [b, s, h]$                        | $h^2 + h$     | $2bsh^2$           | w/ bias                                                      |
+| FFN up projection   | $y_1 = x_{o}W_1 + b_1$                        | $[b, s, h] \times [h, 4h] = [b, s, 4h]$                      | $4h^2 + 4h$   | $8bsh^2$           | $h \to 4h$, w/ bias                                          |
+| FFN down projection | $y_2 = y_1 W_2 + b_2$                         | $[b, s, 4h] \times [4h, h] = [b, s, h]$                      | $4h^2 + h$    | $8bsh^2$           | $4h \to h$, w/ bias                                          |
+| two LayerNorm       | \                                             | \                                                            | $4h$          | 0                  |                                                              |
+| Total               |                                               |                                                              | $12h^2 + 13h$ | $24bsh^2 + 4bs^2h$ |                                                              |
 
 
 

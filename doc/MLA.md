@@ -11,7 +11,7 @@ Ref
 
 ## MLA
 
-<img src="mla.png" width="600">
+<img src="img/mla.png" width="600">
 
 $$
 \begin{align}
