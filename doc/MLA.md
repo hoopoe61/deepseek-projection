@@ -16,14 +16,14 @@ Ref
 $$
 \begin{align}
 \mathbf{c}_{t}^{Q} &= W^{DQ} \mathbf{h}_{t}, \\    
-[\mathbf{q}_{t, 1}^{C};\mathbf{q}_{t, 2}^{C};...;\mathbf{q}_{t, n_{h}}^{C}] = \mathbf{q}_{t}^{C} &= W^{UQ} \mathbf{c}_{t}^{Q}, \\ [\mathbf{q}_{t, 1}^{R};\mathbf{q}_{t, 2}^{R};...;\mathbf{q}_{t, n_{h}}^{R}] = \mathbf{q}_{t}^{R} &= \operatorname{RoPE}({W^{QR}} \mathbf{c}_{t}^{Q}), \\    
+[\mathbf{q}_{t, 1}^{C};\mathbf{q}_{t, 2}^{C};...;\mathbf{q}_{t, n_{h}}^{C}] = \mathbf{q}_{t}^{C} &= W^{UQ} \mathbf{c}_{t}^{Q}, \\ [\mathbf{q}_{t, 1}^{R};\mathbf{q}_{t, 2}^{R};...;\mathbf{q}_{t, n_{h}}^{R}] = \mathbf{q}_{t}^{R} &= \text{RoPE}({W^{QR}} \mathbf{c}_{t}^{Q}), \\    
 \mathbf{q}_{t, i} &= [\mathbf{q}_{t, i}^{C}; \mathbf{q}_{t, i}^{R}], \\ 
 \mathbf{c}_{t}^{KV} &= W^{DKV} \mathbf{h}_{t}, \\    
 [\mathbf{k}_{t, 1}^{C};\mathbf{k}_{t, 2}^{C};...;\mathbf{k}_{t, n_{h}}^{C}] = \mathbf{k}_{t}^{C} &= W^{UK} \mathbf{c}_{t}^{KV}, \\ 
-\mathbf{k}_{t}^{R} &= \operatorname{RoPE}({W^{KR}} \mathbf{h}_{t}), \\    
+\mathbf{k}_{t}^{R} &= \text{RoPE}({W^{KR}} \mathbf{h}_{t}), \\    
 \mathbf{k}_{t, i} &= [\mathbf{k}_{t, i}^{C}; \mathbf{k}_{t}^{R}], \\    
 [\mathbf{v}_{t, 1}^{C};\mathbf{v}_{t, 2}^{C};...;\mathbf{v}_{t, n_{h}}^{C}] = \mathbf{v}_{t}^{C} &= W^{UV} \mathbf{c}_{t}^{KV}, \\ 
-\mathbf{o}_{t, i} &= \sum_{j=1}^{t} \operatorname{Softmax}_j(\frac{\mathbf{q}_{t, i}^T \mathbf{k}_{j, i}}{\sqrt{d_{h} + d_{h}^{R}}}) \mathbf{v}_{j, i}^{C}, \\    
+\mathbf{o}_{t, i} &= \sum_{j=1}^{t} \text{Softmax}_j(\frac{\mathbf{q}_{t, i}^T \mathbf{k}_{j, i}}{\sqrt{d_{h} + d_{h}^{R}}}) \mathbf{v}_{j, i}^{C}, \\    
 \mathbf{u}_{t} &= W^{O} [\mathbf{o}_{t, 1};\mathbf{o}_{t, 2};...;\mathbf{o}_{t, n_{h}}],
 \end{align}
 $$
@@ -60,10 +60,10 @@ Slightly different from DeepSeek-V2, DeepSeek-V2-Lite does not compress the quer
 | ------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------- | ------------------------------------------ |--------------------------------------------------------------|
 | $\mathbf{c}_{t}^{Q} = W^{DQ} \mathbf{h}_{t}$     | $W^{DQ} \in \mathbb{R}^{d_c^{\prime} \times d}$ | $[b, s, d] \times [d, d^{\prime}_c] = [b, s, d^{\prime}_c]$ | $2bs \cdot d \cdot d^{\prime}_c$         | $d \to d^{\prime}_c $                                        |
 | $\mathbf{q}_{t}^{C} = W^{UQ}\mathbf{c}_{t}^{Q}$  | $W^{UQ} \in \mathbb{R}^{d_h n_h \times d_c^{\prime}}$ | $[b, s, d^{\prime}_c] \times [d^{\prime}_c, d_h n_h] = [b, s, d_h n_h]$ | $2bs \cdot d^{\prime}_c \cdot d_h n_h$   | $d^{\prime}_c \to d_h n_h$                                   |
-| $\mathbf{q}_{t}^{R} = \operatorname{RoPE}({W^{QR}} \mathbf{c}_{t}^{Q})$ | $W^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c^{\prime}}$ | $[b, s, d^{\prime}_c] \times [d^{\prime}_c, d^R_h n_h] = [b, s, d^R_h n_h]$ | $2bs \cdot d^{\prime}_c \cdot d^R_h n_h$ | $d^{\prime}_c \to d^R_hn_h$, produce the decouples queries   |
+| $\mathbf{q}_{t}^{R} = \text{RoPE}({W^{QR}} \mathbf{c}_{t}^{Q})$ | $W^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c^{\prime}}$ | $[b, s, d^{\prime}_c] \times [d^{\prime}_c, d^R_h n_h] = [b, s, d^R_h n_h]$ | $2bs \cdot d^{\prime}_c \cdot d^R_h n_h$ | $d^{\prime}_c \to d^R_hn_h$, produce the decouples queries   |
 | $\mathbf{c}_{t}^{KV} = W^{DKV} \mathbf{h}_{t}$   | $W^{DKV} \in \mathbb{R}^{d_c \times d}$      | $[b, s, d] \times [d, d_c] = [b, s, d_c]$            | $2bs \cdot d \cdot d_c$                  | $d \to d_c$                                                  |
 | $\mathbf{k}_{t}^{C} = W^{UK} \mathbf{c}_{t}^{KV}$ | $W^{UK} \in \mathbb{R}^{d_h n_h \times d_c}$ | $[b, s, d_c] \times [d_c, d_h n_h] = [b, s, d_h n_h]$ | $2bs \cdot d_c \cdot d_hn_h$             | $d_c \to d_hn_h$                                             |
-| $\mathbf{k}_{t}^{R} = \operatorname{RoPE}({W^{KR}} \mathbf{h}_{t})$ | $W^{KR} \in \mathbb{R}^{d_h^R \times d}$     | $[b, s, d] \times [d, d^R_h] = [b, s, d^R_h]$       | $2bs \cdot d \cdot d^R_h$                | $d \to d^R_h$, produce the decouples key, shared among heads |
+| $\mathbf{k}_{t}^{R} = \text{RoPE}({W^{KR}} \mathbf{h}_{t})$ | $W^{KR} \in \mathbb{R}^{d_h^R \times d}$     | $[b, s, d] \times [d, d^R_h] = [b, s, d^R_h]$       | $2bs \cdot d \cdot d^R_h$                | $d \to d^R_h$, produce the decouples key, shared among heads |
 | $\mathbf{v}_{t}^{C} = W^{UV} \mathbf{c}_{t}^{KV}$ | $W^{UV} \in \mathbb{R}^{d_h n_h \times d_c}$ | $[b, s, d_c] \times [d_c, d_h n_h] = [b, s, d_h n_h]$ | $2bs \cdot d_c \cdot d_hn_h$             | $dc \to d_hn_h$                                              |
-| $\mathbf{o}_{t} = \sum_{j=1}^{t} \operatorname{Softmax}_j(\frac{\mathbf{q}_{t}^T \mathbf{k}_{j}}{\sqrt{d_{h} + d_{h}^{R}}}) \mathbf{v}_{j}^{C}$ | 0                                            |                                                      |                                            | w/ FlashAttention                                            |
+| $\mathbf{o}_{t} = \sum_{j=1}^{t} \text{Softmax}_j(\frac{\mathbf{q}_{t}^T \mathbf{k}_{j}}{\sqrt{d_{h} + d_{h}^{R}}}) \mathbf{v}_{j}^{C}$ | 0                                            |                                                      |                                            | w/ FlashAttention                                            |
 | $\mathbf{u}_{t} = W^{O} \mathbf{o}_{t}$          | $W^O \in \mathbb R^{d \times d_h n_h}$       | $[b, s, d_h n_h] \times [d_h n_h, d] = [b, s, d]$    | $2bs \cdot d_hn_h \cdot d$               | $d_hn_h \to d$                                               |

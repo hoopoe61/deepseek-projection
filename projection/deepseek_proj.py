@@ -13,6 +13,7 @@ class DeepSeekProjection:
             self._vocab_size,
             self._max_seq_len,
             self._dim,
+            self._intermediate_size,
             self._moe_intermediate_size,
             self._n_layers,
             self._n_dense_layers,
@@ -28,6 +29,7 @@ class DeepSeekProjection:
             model_config.vocab_size,
             model_config.max_seq_len,
             model_config.dim,
+            model_config.intermediate_size,
             model_config.moe_intermediate_size,
             model_config.n_layers,
             model_config.n_dense_layers,
@@ -88,7 +90,7 @@ class DeepSeekProjection:
         )
 
         num_params_ffn = self._dim * self._moe_intermediate_size * 3
-        num_params_ffn_dense = num_params_ffn
+        num_params_ffn_dense = self._dim * self._intermediate_size * 3
         # MoE, the sparse param count
         num_params_gate = 0
         n_experts = self._n_experts_routed + self._n_experts_shared
@@ -196,7 +198,9 @@ class DeepSeekProjection:
         num_flop_fwd_ffn = (
             2 * batch_size * self._max_seq_len * self._dim * self._moe_intermediate_size
         ) * 3
-        num_flop_fwd_ffn_dense = num_flop_fwd_ffn
+        num_flop_fwd_ffn_dense = (
+            2 * batch_size * self._max_seq_len * self._dim * self._intermediate_size
+        ) * 3
         # MoE, the active param
         n_experts = self._n_experts_shared + self._n_experts_routed
         if n_experts > 1:

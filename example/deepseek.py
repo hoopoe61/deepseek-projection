@@ -18,7 +18,7 @@ def project_v3():
     train_options = TrainOptions(
         num_tokens=TOKENS_V3,
         global_batch_size=GBS_V3,
-        # causal_mask=True,
+        causal_mask=True,
         use_dtype=DataType.FP8,
     )
     proj = DeepSeekProjection(model_config, train_options)
@@ -46,7 +46,9 @@ def project_v2():
     print("-" * 50)
     print(f"Model: {model_config.name}")
 
-    train_options = TrainOptions(num_tokens=TOKENS_V2, global_batch_size=GBS_V2)
+    train_options = TrainOptions(
+        num_tokens=TOKENS_V2, global_batch_size=GBS_V2, causal_mask=True
+    )
     proj = DeepSeekProjection(model_config, train_options)
 
     num_sparse_params, num_activated_params = proj.get_num_params()
@@ -73,7 +75,7 @@ def project_v2_lite():
     print(f"Model: {model_config.name}")
 
     train_options = TrainOptions(
-        num_tokens=TOKENS_V2_LITE, global_batch_size=GBS_V2_LITE
+        num_tokens=TOKENS_V2_LITE, global_batch_size=GBS_V2_LITE, causal_mask=True
     )
     proj = DeepSeekProjection(model_config, train_options)
 

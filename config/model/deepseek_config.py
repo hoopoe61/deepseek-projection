@@ -14,6 +14,7 @@ class DeepSeekV2:
     vocab_size: int = 102400
     max_seq_len: int = 4096
     dim: int = 5120
+    intermediate_size: int = 12288  # for dense layers
     moe_intermediate_size: int = 1536
     n_layers: int = 60  # num of total layers
     n_dense_layers: int = 1  # num of non-MoE layers
@@ -39,6 +40,7 @@ class DeepSeekV2Lite(DeepSeekV2):
     vocab_size = 102400
     max_seq_len = 4096
     dim = 2048
+    intermediate_size = 10944
     moe_intermediate_size = 1408
     n_layers = 27
     n_dense_layers = 1
@@ -62,6 +64,7 @@ class DeepSeekV3(DeepSeekV2):
     vocab_size = 129280
     max_seq_len = 4096
     dim = 7168
+    intermediate_size = 18432
     moe_intermediate_size = 2048
     n_layers = 61
     n_dense_layers = 3
