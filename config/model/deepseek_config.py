@@ -79,3 +79,48 @@ class DeepSeekV3(DeepSeekV2):
     n_experts_shared = 1
     n_experts_routed = 256
     router_top_k = 8
+
+
+@dataclass
+class Nanbeige330B:
+    name = "Nanbeige330B"
+    vocab_size = 160000
+    max_seq_len = 4096
+    dim = 8192
+    intermediate_size = 18432
+    moe_intermediate_size = 1280
+    n_layers = 80
+    n_dense_layers = 3
+    n_heads = 64
+    qk_nope_head_dim = 128
+    qk_rope_head_dim = 64
+    q_lora_rank = 1536
+    kv_lora_rank = 512
+    bias = False
+    ffn_swiglu = True
+    norm_type = NormType.RMS_NORM
+    n_experts_shared = 1
+    n_experts_routed = 128
+    router_top_k = 20
+
+
+class Nanbeige450B:
+    name = "Nanbeige450B"
+    vocab_size = 160000
+    max_seq_len = 4096
+    dim = 8192
+    intermediate_size = 18432
+    moe_intermediate_size = 1280
+    n_layers = 110
+    n_dense_layers = 3
+    n_heads = 64
+    qk_nope_head_dim = 128
+    qk_rope_head_dim = 64
+    q_lora_rank = 1536
+    kv_lora_rank = 512
+    bias = False
+    ffn_swiglu = True
+    norm_type = NormType.RMS_NORM
+    n_experts_shared = 1
+    n_experts_routed = 128
+    router_top_k = 14

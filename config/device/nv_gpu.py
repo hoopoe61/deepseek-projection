@@ -36,7 +36,8 @@ class H100SXM80GB(GPUConfig):
     TF32_TFLOPS = 495
     BF16_TFLOPS = 989
     FP16_TFLOPS = 989
-    FP8_TFLOPS = 1979
+    #FP8_TFLOPS = 1979 # 根据比例来调整一下；
+    FP8_TFLOPS = 1700 # fp8 * 0.75 + bf16 * 0.25 来估算实际的算力情况
     INT8_TOPS = 1979
     pcie_bandwidth_GB_per_sec = 128
     hbd_bandwidth_GB_per_sec = 900  # NVLink
